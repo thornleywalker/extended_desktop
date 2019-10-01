@@ -160,11 +160,9 @@ int main()
 			cursorPos->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
 			cursorPos->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
 			)
-			
-		//for(int i = 0; i < 1000; i++)
 		{
-			SetCursorPos(SCREEN_LEFT + 1, cursorPos->y);
 			SwitchDesktopRight();
+			SetCursorPos(SCREEN_LEFT + 1, cursorPos->y);
 		}
 
 		//left switch
@@ -173,8 +171,8 @@ int main()
 			cursorPos->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
 			)
 		{
-			SetCursorPos(SCREEN_RIGHT - 1, cursorPos->y);
 			SwitchDesktopLeft();
+			SetCursorPos(SCREEN_RIGHT - 1, cursorPos->y);
 		}
 	}
 
