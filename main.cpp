@@ -13,61 +13,12 @@ using namespace std;
 
 void SwitchDesktopRight()
 {
-	//keystrokes
-	KEYBDINPUT ctrlButton;
-	ctrlButton.wVk = VK_CONTROL;
-	ctrlButton.time = 0;
-	KEYBDINPUT windowsButton;
-	windowsButton.wVk = VK_LWIN;
-	windowsButton.time = 0;
-	KEYBDINPUT rightButton;
-	rightButton.wVk = VK_RIGHT;
-	rightButton.time = 0;
-
-	//keyboard inputs
-	INPUT ctrlInput;
-	ctrlInput.type = INPUT_KEYBOARD;
-	ctrlInput.ki = ctrlButton;
-	INPUT windowsInput;
-	windowsInput.type = INPUT_KEYBOARD;
-	windowsInput.ki = windowsButton;
-	INPUT rightInput;
-	rightInput.type = INPUT_KEYBOARD;
-	rightInput.ki = rightButton;
-
-	//input array
-	INPUT rightSwitch[3] = { ctrlInput, windowsInput, rightInput };
-	SendInput(3, rightSwitch, 28);
+	
 }
 
 void SwitchDesktopLeft()
 {
-	//keystrokes
-	KEYBDINPUT ctrlButton;
-	ctrlButton.wVk = VK_CONTROL;
-	ctrlButton.time = 0;
-	KEYBDINPUT windowsButton;
-	windowsButton.wVk = VK_LWIN;
-	windowsButton.time = 0;
-	KEYBDINPUT leftButton;
-	leftButton.wVk = VK_LEFT;
-	leftButton.time = 0;
-
-	//keyboard inputs
-	INPUT ctrlInput;
-	ctrlInput.type = INPUT_KEYBOARD;
-	ctrlInput.ki = ctrlButton;
-	INPUT windowsInput;
-	windowsInput.type = INPUT_KEYBOARD;
-	windowsInput.ki = windowsButton;
-	INPUT leftInput;
-	leftInput.type = INPUT_KEYBOARD;
-	leftInput.ki = leftButton;
-
-	//input array
-	INPUT leftSwitch[3] = { ctrlInput, windowsInput, leftInput };
-
-	SendInput(3, leftSwitch, 28);
+	
 }
 
 int main()
