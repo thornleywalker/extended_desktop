@@ -61,6 +61,7 @@ void ReleaseKeys()
 
 void SwitchDesktopRight()
 {
+
 	//keystrokes
 	KEYBDINPUT ctrlButton;
 	ctrlButton.wVk = VK_CONTROL;
@@ -101,6 +102,7 @@ void SwitchDesktopRight()
 
 void SwitchDesktopLeft()
 {
+
 	//keystrokes
 	KEYBDINPUT ctrlButton;
 	ctrlButton.wVk = VK_CONTROL;
