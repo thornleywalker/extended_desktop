@@ -8,6 +8,8 @@
 #define SCREEN_BOTTOM 899
 #define TOP_BOTTOM_THRESHOLD 200
 
+#define KEYSTROKE_TIME_LENGTH 100
+
 using namespace std;
 
 
@@ -16,13 +18,22 @@ void SwitchDesktopRight()
 	//keystrokes
 	KEYBDINPUT ctrlButton;
 	ctrlButton.wVk = VK_CONTROL;
-	ctrlButton.time = 0;
+	ctrlButton.wScan = 0;
+	ctrlButton.dwFlags = 0;
+	ctrlButton.time = KEYSTROKE_TIME_LENGTH;
+	ctrlButton.dwExtraInfo = 0;
 	KEYBDINPUT windowsButton;
 	windowsButton.wVk = VK_LWIN;
-	windowsButton.time = 0;
+	windowsButton.wScan = 0;
+	windowsButton.dwFlags = 0;
+	windowsButton.time = KEYSTROKE_TIME_LENGTH;
+	windowsButton.dwExtraInfo = 0;
 	KEYBDINPUT rightButton;
 	rightButton.wVk = VK_RIGHT;
-	rightButton.time = 0;
+	rightButton.wScan = 0;
+	rightButton.dwFlags = 0;
+	rightButton.time = KEYSTROKE_TIME_LENGTH;
+	rightButton.dwExtraInfo = 0;
 
 	//keyboard inputs
 	INPUT ctrlInput;
@@ -37,7 +48,7 @@ void SwitchDesktopRight()
 
 	//input array
 	INPUT rightSwitch[3] = { ctrlInput, windowsInput, rightInput };
-	SendInput(3, rightSwitch, 28);
+	cout << SendInput(3, rightSwitch, 28) << endl;
 }
 
 void SwitchDesktopLeft()
@@ -45,13 +56,22 @@ void SwitchDesktopLeft()
 	//keystrokes
 	KEYBDINPUT ctrlButton;
 	ctrlButton.wVk = VK_CONTROL;
-	ctrlButton.time = 0;
+	ctrlButton.wScan = 0;
+	ctrlButton.dwFlags = 0;
+	ctrlButton.time = KEYSTROKE_TIME_LENGTH;
+	ctrlButton.dwExtraInfo = 0;
 	KEYBDINPUT windowsButton;
 	windowsButton.wVk = VK_LWIN;
-	windowsButton.time = 0;
+	windowsButton.wScan = 0;
+	windowsButton.dwFlags = 0;
+	windowsButton.time = KEYSTROKE_TIME_LENGTH;
+	windowsButton.dwExtraInfo = 0;
 	KEYBDINPUT leftButton;
 	leftButton.wVk = VK_LEFT;
-	leftButton.time = 0;
+	leftButton.wScan = 0;
+	leftButton.dwFlags = 0;
+	leftButton.time = KEYSTROKE_TIME_LENGTH;
+	leftButton.dwExtraInfo = 0;
 
 	//keyboard inputs
 	INPUT ctrlInput;
@@ -67,7 +87,7 @@ void SwitchDesktopLeft()
 	//input array
 	INPUT leftSwitch[3] = { ctrlInput, windowsInput, leftInput };
 
-	SendInput(3, leftSwitch, 28);
+	cout << SendInput(3, leftSwitch, 28) << endl;
 }
 
 int main()
