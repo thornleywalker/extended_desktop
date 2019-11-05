@@ -1,6 +1,10 @@
 #include <iostream>
 #include <Windows.h>
-#include <WinUser.h>
+#include <WinUser.h>	// std::SendInput()
+#include <thread>		// std::thread
+#include <mutex>		// std::mutex
+#include <condition_variable>//std::condition_variable::wait
+#include <chrono>		// std::chrono::milliseconds
 
 #define SCREEN_LEFT 0
 #define SCREEN_RIGHT 1599
@@ -10,7 +14,11 @@
 
 #define KEYSTROKE_TIME_LENGTH 100
 
+#define DELAY_TIME_MS 10
+
 using namespace std;
+
+timed_mutex mtx;
 
 void ReleaseKeys()
 {
@@ -141,41 +149,53 @@ void SwitchDesktopLeft()
 	ReleaseKeys();
 }
 
+void MouseCheck(POINT* cursor)
+{
+	//poll for position
+	GetCursorPos(cursor);
+
+	//right switch
+	if (cursor->x == SCREEN_RIGHT &&
+		cursor->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
+		cursor->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
+		)
+	{
+		SwitchDesktopRight();
+		SetCursorPos(SCREEN_LEFT + 1, cursor->y);
+	}
+
+	//left switch
+	if (cursor->x == SCREEN_LEFT &&
+		cursor->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
+		cursor->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
+		)
+	{
+		SwitchDesktopLeft();
+		SetCursorPos(SCREEN_RIGHT - 1, cursor->y);
+	}
+	this_thread::sleep_for(chrono::milliseconds(DELAY_TIME_MS));
+}
 
 int main()
 {
 	//create cursor object
 	POINT* cursorPos = new POINT();
+	HWND theWindow;
+	WNDPROC windowProc;
+	windowProc(theWindow, WM_MOUSEMOVE, 0, 0);
+	
 	while (true)
 	{
-		//continuously poll for position
-		GetCursorPos(cursorPos);
-
-		//test output for position
-		//cout << cursorPos->x << '\t' << cursorPos->y << endl;
-
-
-		
-		//right switch
-		
-		if (cursorPos->x == SCREEN_RIGHT &&
-			cursorPos->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
-			cursorPos->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
-			)
+		if (MOUSEEVENTF_MOVE)
 		{
-			SwitchDesktopRight();
-			SetCursorPos(SCREEN_LEFT + 1, cursorPos->y);
+			cout << "Mouse Move\n";
+			MouseCheck(cursorPos);
 		}
-
-		//left switch
-		if (cursorPos->x == SCREEN_LEFT &&
-			cursorPos->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
-			cursorPos->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
-			)
+		else
 		{
-			SwitchDesktopLeft();
-			SetCursorPos(SCREEN_RIGHT - 1, cursorPos->y);
+			cout << "No move\n";
 		}
+		
 	}
 
 
