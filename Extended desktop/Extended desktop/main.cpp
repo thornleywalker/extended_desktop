@@ -5,12 +5,10 @@
 #include <mutex>		// std::mutex
 #include <condition_variable>//std::condition_variable::wait
 #include <chrono>		// std::chrono::milliseconds
+#include "wtypes.h"
 
-#define SCREEN_LEFT 0
-#define SCREEN_RIGHT 1599
-#define SCREEN_TOP 0
-#define SCREEN_BOTTOM 899
 #define TOP_BOTTOM_THRESHOLD 200
+#define SENSITIVITY 3
 
 #define KEYSTROKE_TIME_LENGTH 100
 #define DELAY_TIME_MS 100
@@ -18,6 +16,26 @@
 #define DEBUG_ON 0
 
 using namespace std;
+
+int screenLeft = 0;
+int screenRight;
+int screenTop = 0;
+int screenBottom;
+
+// Get the horizontal and vertical screen sizes in pixel
+void GetDesktopResolution(int* rightSide, int* bottomSide)
+{
+	RECT desktop;
+	// Get a handle to the desktop window
+	const HWND hDesktop = GetDesktopWindow();
+	// Get the size of screen to the variable desktop
+	GetWindowRect(hDesktop, &desktop);
+	// The top left corner will have coordinates (0,0)
+	// and the bottom right corner will have coordinates
+	// (horizontal, vertical)
+	*rightSide = desktop.right;
+	*bottomSide = desktop.bottom;
+}
 
 void ReleaseKeys()
 {
@@ -170,29 +188,32 @@ void MouseCheck(POINT* cursor)
 	GetCursorPos(cursor);
 
 	//right switch
-	if (cursor->x == SCREEN_RIGHT &&
-		cursor->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
-		cursor->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
+	if (cursor->x >= screenRight - SENSITIVITY &&
+		cursor->y >= screenTop + TOP_BOTTOM_THRESHOLD &&
+		cursor->y <= screenBottom - TOP_BOTTOM_THRESHOLD
 		)
 	{
 		SwitchDesktopRight();
-		SetCursorPos(SCREEN_LEFT + 1, cursor->y);
+		SetCursorPos(screenLeft + SENSITIVITY + 1, cursor->y);
 	}
 
 	//left switch
-	if (cursor->x == SCREEN_LEFT &&
-		cursor->y >= SCREEN_TOP + TOP_BOTTOM_THRESHOLD &&
-		cursor->y <= SCREEN_BOTTOM - TOP_BOTTOM_THRESHOLD
+	if (cursor->x <= screenLeft + SENSITIVITY &&
+		cursor->y >= screenTop + TOP_BOTTOM_THRESHOLD &&
+		cursor->y <= screenBottom - TOP_BOTTOM_THRESHOLD
 		)
 	{
 		SwitchDesktopLeft();
-		SetCursorPos(SCREEN_RIGHT - 1, cursor->y);
+		SetCursorPos(screenRight - SENSITIVITY - 1, cursor->y);
 	}
 }
 
 int main()
 {
-	FreeConsole();
+	GetDesktopResolution(&screenRight, &screenBottom);
+	cout << "horizontal: " << screenRight << endl;
+	cout << "vertical: " << screenBottom << endl;
+	if(!DEBUG_ON) FreeConsole();
 	//create cursor object
 	POINT* cursorPos = new POINT();
 	
@@ -200,12 +221,12 @@ int main()
 	{
 		if (MOUSEEVENTF_MOVE)
 		{
-			//if(DEBUG_ON) cout << "Mouse Move\n";
+			if(DEBUG_ON) cout << "Mouse Move\n";
 			MouseCheck(cursorPos);
 		}
 		else
 		{
-			//if(DEBUG_ON) cout << "No move\n";
+			if(DEBUG_ON) cout << "No move\n";
 		}
 		Sleep(DELAY_TIME_MS);
 	}
