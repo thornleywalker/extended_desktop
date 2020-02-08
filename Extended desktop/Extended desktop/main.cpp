@@ -184,6 +184,7 @@ void SwitchDesktopLeft()
 
 void MouseCheck(POINT* cursor)
 {
+	
 	//poll for position
 	GetCursorPos(cursor);
 
@@ -198,7 +199,7 @@ void MouseCheck(POINT* cursor)
 	}
 
 	//left switch
-	if (cursor->x <= screenLeft + SENSITIVITY &&
+	else if (cursor->x <= screenLeft + SENSITIVITY &&
 		cursor->y >= screenTop + TOP_BOTTOM_THRESHOLD &&
 		cursor->y <= screenBottom - TOP_BOTTOM_THRESHOLD
 		)
